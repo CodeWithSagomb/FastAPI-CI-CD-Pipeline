@@ -1,0 +1,38 @@
+# .github/workflows/ci.yml
+
+name: Continuous Integration (CI)
+
+# Déclenche le workflow à chaque 'push' sur la branche 'main' ou 'master'
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  test:
+    # Le job s'exécutera sur une machine virtuelle Ubuntu (la plus courante)
+    runs-on: ubuntu-latest
+
+    steps:
+    # Étape 1 : Cloner le code du dépôt
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Étape 2 : Configurer l'environnement Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Assurez-vous que c'est la version que vous utilisez
+
+    # Étape 3 : Installer les dépendances
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Étape 4 : Exécuter les tests (Pytest)
+    - name: Run tests
+      run: |
+        # Exécuter pytest depuis la racine du projet
+        pytest
